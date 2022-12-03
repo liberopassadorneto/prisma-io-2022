@@ -14,8 +14,10 @@ model Courses {
   duration    Int
   created_at  DateTime @default(now())
 
-  teacher       Teachers @relation(fields: [fk_teacher_id], references: [id])
-  fk_teacher_id String   @unique
+  // teacher       Teachers @relation(fields: [fk_teacher_id], references: [id])
+  // fk_teacher_id String   @unique
+
+  coursesModules CoursesModules[]
 
   @@map("courses")
 }
@@ -26,6 +28,8 @@ model Modules {
   description String
   created_at  DateTime @default(now())
 
+  coursesModules CoursesModules[]
+
   @@map("modules")
 }
 
@@ -33,7 +37,7 @@ model Teachers {
   id   String @id @default(uuid())
   name String @unique
 
-  course Courses?
+  // course Courses?
 
   @@map("teachers")
 }
@@ -55,4 +59,17 @@ model Books {
   author    Authors @relation(fields: [author_id], references: [id])
 
   @@map("books")
+}
+
+model CoursesModules {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+
+  fk_course_id String
+  course       Courses @relation(fields: [fk_course_id], references: [id])
+
+  fk_module_id String
+  module       Modules @relation(fields: [fk_module_id], references: [id])
+
+  @@map("courses_modules")
 }
